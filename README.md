@@ -13,7 +13,7 @@ Out of the box, an LG webOS 6 TV doesn't recognize the 8BitDo 2.4G receiver as a
 | Shows up as | Xbox 360 controller (sticks, triggers, D-pad, all buttons including Guide) |
 | Reconnects | Yes. Turning the controller off and on, or replugging the receiver, is picked up in about 2 seconds |
 | Starts with the TV | Yes, through Homebrew Channel's boot scripts |
-| Rumble | Not yet |
+| Rumble | Yes, both motors (tested in F1 22 through punktfunk) |
 
 ## Requirements
 
@@ -41,7 +41,7 @@ That's it. The driver now starts by itself every time the TV boots.
 cat /tmp/pad8bitdo.log
 ```
 
-You should see a line like `receiver /dev/bus/usb/002/005 ready, virtual Xbox 360 pad created`.
+You should see a line like `receiver /dev/bus/usb/002/005 ready, virtual Xbox 360 pad created (rumble on)`.
 
 The new controller is also listed here, as `Microsoft X-Box 360 pad`:
 
@@ -70,7 +70,8 @@ There are two problems on webOS 6's kernel (4.4), and the driver gets around bot
 - claims its gamepad interface through `usbfs`;
 - sends the start request and the LED command;
 - reads the standard 20-byte Xbox 360 reports;
-- feeds them to a virtual controller created with `/dev/uinput`.
+- feeds them to a virtual controller created with `/dev/uinput`;
+- forwards rumble the other way. The virtual controller supports force feedback (`FF_RUMBLE`), and every rumble an app asks for is sent to the receiver as an Xbox 360 rumble report, with separate strong and weak motors.
 
 The virtual controller uses the same buttons and axes as the kernel `xpad` driver, and identifies as a wired Xbox 360 pad (`045e:028e`), so game-controller databases (SDL etc.) map it correctly.
 
