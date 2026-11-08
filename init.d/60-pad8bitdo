@@ -1,0 +1,5 @@
+#!/bin/sh
+# Homebrew Channel boot hook: start the 8BitDo 2.4G receiver driver.
+# Installed as /var/lib/webosbrew/init.d/60-pad8bitdo ; the driver lives in /home/root/pad8bitdo/
+# https://github.com/artor410/webOS6-8bitdo-receiver-driver
+( python /home/root/pad8bitdo/pad8bitdo.py > /tmp/pad8bitdo.err 2>&1 ) </dev/null >/dev/null 2>&1 &
